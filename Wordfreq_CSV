@@ -1,0 +1,56 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+Created on Thu May 16 12:31:17 2019
+
+@author: Venkatprasad.K
+"""
+
+import csv
+#from collections import Counter
+#from collections import defaultdict
+import re
+
+
+f= open('SampleInput.csv') # Open CSV file 
+
+# Read CustomerNarrative column from CSV file and write it into a list
+csv_f=csv.reader(f) # Invoke CSV module to read thru CSV file
+customernarrative= [] # create new list for customer narrative
+for row in csv_f: # starting a for loop to read through every row
+    customernarrative.append(row[4]) # reading only the 5th col in each row, write to list
+f.close()
+
+#Copy Customernarrative column into CustomerNarrativeTxt.txt file
+opfile=open('CustomerNarrativeTxt.txt','w') #
+for listitem in customernarrative:
+    opfile.write('%s\n'% listitem)
+opfile.close()
+print ('Number of customer narratives available%d',len(customernarrative))
+
+# Publish words and its frequency in output.xls file and in console
+frequency = {} # declaring an emppty dictionary
+document_text = open('CustomerNarrativeTxt.txt', 'r') 
+text_string = document_text.read().lower() # copy contents of test.txt file into a string after making it all lowercase
+match_pattern = re.findall(r'\b[a-z]{1,15}\b', text_string) # look for words with character length>1
+
+for word in match_pattern:
+    count = frequency.get(word, 0)
+    frequency[word] = count + 1
+ 
+    
+f=open('output.txt','w')   
+frequency_list = frequency.keys()
+f.write('Words,Frequency \n')
+for words in frequency_list:
+     f.write('%s, %d \n'%(words,frequency[words]))
+f.close()  
+
+
+for words in frequency_list:
+     print('%s, %d \n'%(words,frequency[words]))
+
+
+
+
+
